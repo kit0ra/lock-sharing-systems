@@ -1,0 +1,28 @@
+digraph auto_5{
+0[shape=square];
+1;
+2;
+3;
+4;
+5;
+6;
+7;
+8;
+9;
+10;
+9 -> 10[xlabel="rel(2)"];
+9 -> 8;
+5 -> 6[xlabel="rel(2)"];
+5 -> 7;
+3 -> 4[xlabel="rel(1)"];
+2 -> 1;
+2 -> 3[xlabel="acq(2)"];
+6 -> 0[xlabel="rel(1)"];
+7 -> 5;
+4 -> 5[xlabel="acq(1)"];
+10 -> 1[xlabel="acq(1)"];
+1 -> 2;
+0 -> 1[xlabel="acq(1)"];
+0 -> 8[xlabel="acq(2)"];
+8 -> 9;
+}

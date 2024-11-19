@@ -1,0 +1,13 @@
+digraph Democrite{
+0 [shape=square];
+1;
+2;
+3;
+4;
+0 -> 1 [xlabel="acq(3)"];
+1 -> 3 [xlabel="acq(4)"];
+0 -> 2 [xlabel="acq(4)"];
+2 -> 3 [xlabel="acq(3)"];
+3 -> 4 [xlabel="rel(3)"];
+4 -> 0 [xlabel="rel(4)"];
+}

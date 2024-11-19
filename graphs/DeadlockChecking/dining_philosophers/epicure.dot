@@ -1,0 +1,13 @@
+digraph Epicure{
+0 [shape=square];
+1;
+2;
+3;
+4;
+0 -> 1 [xlabel="acq(4)"];
+1 -> 3 [xlabel="acq(5)"];
+0 -> 2 [xlabel="acq(5)"];
+2 -> 3 [xlabel="acq(4)"];
+3 -> 4 [xlabel="rel(4)"];
+4 -> 0 [xlabel="rel(5)"];
+}

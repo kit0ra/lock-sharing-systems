@@ -1,0 +1,17 @@
+digraph auto_3{
+0[shape=square];
+1;
+2;
+4;
+5;
+6;
+8;
+5 -> 6[xlabel="acq(3)"];
+2 -> 4[xlabel="acq(1)"];
+6 -> 5[xlabel="rel(3)"];
+8 -> 1[xlabel="acq(3)"];
+0 -> 1[xlabel="acq(3)"];
+1 -> 2[xlabel="acq(5)"];
+1 -> 8[xlabel="rel(3)"];
+4 -> 5[xlabel="rel(3)"];
+}

@@ -1,0 +1,54 @@
+# Devoir maison pour le cours de Complexité and Calculabilité du M1 informatique de l’Université de Bordeaux.
+
+Auteur: Vincent Penelle (<vincent.penelle@u-bordeaux.fr>)
+
+Pour compiler: 'make'
+
+Alternativement, si la commande 'make' ne fonctionne pas (ce qui est possible si vous utilisez un système différent du mien ou du CREMI), essayez ce qui suit:
+- 'mkdir toto'
+- 'cd toto'
+- 'cmake ..'
+- 'make'
+Cela construira le projet dans le répertoire 'toto' (nom modifiable). Les commandes qui suivent y fonctionneront, excepté 'make doc' que je n’ai pas configuré avec CMake (mais cette commande devrait fonctionner à la racine).
+
+Pour générer la documentation: 'make doc' (puis ouvrez le fichier html généré).
+Attention, le fichier doxygen.config a été généré avec la version 1.9.7 de doxygen (i.e., pas celle du CREMI). Cela devrait fonctionner (en tous cas au CREMI c’est le cas), mais en cas d’erreur ou de warnings intempestif, lancez 'doxygen -u doxygen.config', cela devrait régler les problèmes.
+
+Pour lancer le programme: './graphProblemSolver'
+
+Un exécutable fonctionnel vous est fourni. Il a été compilé au CREMI, et il est donc plus sage de ne l’utiliser que là-bas. Pour l’utiliser: './graphProblemSolver-solution'. Sans argument, le programme affichera un message expliquant comment l’utiliser (tout comme votre propre exécutable). Il vous permettra de comparer son comportement à celui du votre (cependant, il refusera de vous montrer la formule qu’il produit par la réduction, alors que votre programme vous permettra d’afficher la formule générée).
+Nous vous invitons à le tester et à vous rapprocher de votre chargé de TD au cas où vous ne comprenez pas comment vous en servir (mais normalement le message d’usage devrait être clair).
+
+Deux programmes exemples sont fournis, un pour manipuler la structure de graphe, un pour manipuler Z3. Ils sont situés dans le répertoire 'examples'. Vous pouvez les utiliser et modifier à votre convenance.
+Pour construire l’exemple sur Z3: 'make Z3Example'
+Pour construire l’exemple de manipulation de graph: 'make graphParser'
+(note: le make généré par CMake peut également produire ces exécutables).
+
+Nous vous fournissons également le code résolvant un problème vu en TD, le problème de coloriage d’un graphe, avec un brute-force et sa réduction vers SAT. Vous pouvez (devriez) vous en inspirez pour comprendre comment implémenter les fonctions traitant le problème Bounded Deadlock Checking. Il est cependant évidemment bien plus simple -- en particulier, le brute-force est optimisé pour détecter les erreurs à la volée (d’où la non-séparation du vérificateur), et la réduction est très petite.
+
+Dans votre implémentation de la réduction (DeadlockReduction.c), votre fonction a uniquement à produire une formule de logique propositionnelle, la résolution de cette formule est faite par le main qui vous est fourni. Vous pouvez utiliser les fonctions de Z3Tools.h (notamment la formule uniqueFormula qui peut être utile). Vous aurez également besoin de fonctions de Z3 pour générer des formules. L’API Z3 est disponible ici <https://z3prover.github.io/api/html/group__capi.html>.
+Cependant, vous devriez n’avoir besoin que des fonctions suivantes : Z3_mk_true (vrai), Z3_mk_false (faux) (et encore, l’utilité de ces deux là n’est pas si claire), Z3_mk_and (et), Z3_mk_or (ou), Z3_mk_not (négation), Z3_mk_implies (implication) et Z3_mk_eq (équivalence).
+On ne demande pas que la formule que vous produisez soit en CNF, et vous pouvez utiliser des implications et équivalence dedans (ce qui la rendra plus lisible).
+
+Attention, les fonctions Z3_mk_and et Z3_mk_or manipulent des tableaux et leur taille. Si vous donnez une taille non cohérente avec le tableau, Z3 plantera et renverra une erreur qui peut être cryptique. Si vous avez un message disant en substance que vous avez atteint une zone du code que vous ne devriez pas, ou qu’une assertion est violée, il est très probable que vous ayez une telle erreur, donc vérifiez bien que vous remplissez correctement le tableau passé à ces fonctions et que vous leur donnez la bonne taille.
+
+Avec l’option adéquate (-f), les exécutables produits dans le projets crééront des fichiers .dot représentant les solutions trouvées (dans le cas où elles existent). Vous pouvez visualiser ces fichiers en générant une image avec le programme dot, ou directement avec le programme xdot s’il est installé sur votre machine.
+
+Avec l’option -F, vous obtiendrez un fichier contenant la formule générée par la réduction.
+
+Avec l’option -t, vous obtiendrez un affichage de la solution trouvée au terminal (s’il y en a une).
+
+Avec l’option -M, vous obtiendrez un affichage de la valuation complète satisfaisant votre formule (ce qui peut être utile pour vérifier si vous avez bien une valuation qui a du sens ou pas).
+
+Instructions:
+    Vous avez à implémenter les fichiers DeadlockResolution.c et DeadlockReduction.c, dont les fichiers équivalents en .h contiennent les prototypes et la documentation des fonctions à implémenter. Vous aurez certainement besoin de fonctions locales (découper son code est une bonne pratique, et un code avec uniquement d’énormes fonctions illisibles sera sanctionné, même si lisible). Vous documenterez ces fonctions directement dans le .c (avec un style similaire à celui présent dans les .h).
+
+    Le fichier LockAutomaton.h contient les fonctions nécessaires pour manipuler l’instance du problème.
+
+    Vous n’êtes pas autorisés à modifier de fichier en-dehors du dossier src/BoundedDeadlockChecking. Si vous avez besoin de fonctions non présentes dans LockAutomaton.c, vous pouvez les y définir et ajouter un fichier .h avec ces fonctions directement dans le dossier src/BoundedDeadlockChecking (vous devriez cependant y réfléchir à deux fois : il est possible d’implémenter le projet sans fonctions supplémentaires manipulant le graphe, puisque je l’ai fait). De plus, ne modifiez pas les fonctions existantes.
+    Votre programme devra compiler. Si jamais vous ne terminez pas d’implémenter l’une des fonctions attendues, faites-en sorte qu’elle renvoie une valeur par défaut qui n’empêche pas le tout de compiler (et faites en sorte que le programme le dise explicitement).
+
+    Vous enverrez uniquement le dossier src/BoundedDeadlockChecking en tant que solution, d’où l’obligation de ne modifier que ce dossier.
+
+    Faites en sorte que votre code soit aussi propre et lisible que possible. À cette fin, vous devez ajouter des fonctions auxiliaires, les faire courtes et faisant des tâches simples, et les documenter dans le style doxygen (i.e., celui utilisé dans le reste du projet). Vous serez pénalisés si les fonctions demandées ne sont pas découpées.
+    Par exemple, pour le brute force, vous pouvez séparer votre vérificateur de la partie qui génère le certificat. Pour la réduction, faites en sorte d’avoir une sous-fonction pour chaque itérateur, ce qui de plus vous aidera à faire un code produisant votre formule.
